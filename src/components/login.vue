@@ -3,10 +3,10 @@
     <el-form :rules="rules" ref="form" :model="form" label-width="80px">
       <img src="../assets/QQ图片20191025202658.jpg" alt="">
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="form.username"></el-input>
+        <el-input @keyup.enter.native="login" v-model="form.username"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="form.password"></el-input>
+        <el-input @keyup.enter.native="login" type="password" v-model="form.password"></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   data () {
     return {
@@ -43,26 +42,22 @@ export default {
       this.$refs.form.resetFields()
     },
     // 点击登录
-    login () {
-      this.$refs.form.validate(isvalid => {
-        if (!isvalid) return
-        axios.post('http://localhost:8888/api/private/v1/login', this.form).then(res => {
-          console.log(res.data)
+    async login () {
+      try {
+        await this.$refs.form.validate()
+        const { meta, data } = await this.$axios.post('login', this.form)
+        console.log(meta, data)
 
-          const { meta, data } = res.data
-          if (meta.status === 200) {
-            localStorage.setItem('token', data.token)
-            this.$message({
-              message: meta.msg,
-              type: 'success',
-              duration: 1000
-            })
-            this.$router.push('/index')
-          } else {
-            this.$message.error(meta.msg)
-          }
-        })
-      })
+        if (meta.status === 200) {
+          localStorage.setItem('token', data.token)
+          this.$message.success(meta.msg)
+          this.$router.push('/index')
+        } else {
+          this.$message.error(meta.msg)
+        }
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }
