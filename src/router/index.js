@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/login.vue'
 import Index from '../components/index.vue'
+import Roles from '../components/rights/roles.vue'
+import Rights from '../components/rights/rights.vue'
 import ElementUI from 'element-ui'
 import Users from '../components/users/users.vue'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -18,7 +20,10 @@ const routes = [
     path: '/index',
     component: Index,
     children: [
-      { path: '/users', component: Users }
+      { path: '/users', component: Users },
+      { path: '/roles', component: Roles },
+      { path: '/rights', component: Rights }
+
     ]
   }
 ]

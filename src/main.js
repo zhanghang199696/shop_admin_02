@@ -3,6 +3,13 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 
+import Router from 'vue-router'
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 

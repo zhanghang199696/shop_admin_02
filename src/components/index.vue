@@ -19,7 +19,7 @@
           text-color="#fff"
           active-text-color="#ffd04b"
           unique-opened
-          default-active
+          :default-active="defaultActive"
         >
           <el-submenu :index="item.path" v-for="item in indexList" :key="item.id">
             <template v-slot:title>
@@ -33,13 +33,20 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
 export default {
+  computed: {
+    defaultActive () {
+      return this.$route.path.slice(1)
+    }
+  },
   data () {
     return {
       indexList: []
