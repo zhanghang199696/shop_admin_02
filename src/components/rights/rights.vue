@@ -31,7 +31,6 @@ export default {
   },
   async created () {
     const { meta, data } = await this.$axios.get(`rights/list`)
-    console.log(data)
 
     if (meta.status === 200) {
       this.rightsList = data
